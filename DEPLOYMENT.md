@@ -101,11 +101,17 @@ done
 |----------|-------------|
 | `PORT` | `8000` |
 | `REDIS_URL` | `${{Redis.REDIS_URL}}` (service reference) |
-| `AGENT_API_KEY` | `lab-day12-key-2026` |
-| `JWT_SECRET` | `lab-day12-jwt-secret` |
+| `AGENT_API_KEY` | Set in Railway Variables (secret) |
+| `JWT_SECRET` | Set in Railway Variables (secret) |
 | `ENVIRONMENT` | `production` |
 | `RATE_LIMIT_PER_MINUTE` | `10` |
 | `MONTHLY_BUDGET_USD` | `10.0` |
+
+## Screenshots
+
+- [Deployment dashboard](screenshots/dashboard.png)
+- [Service running](screenshots/running.png)
+- [Test results](screenshots/test.png)
 
 ## Local Development
 

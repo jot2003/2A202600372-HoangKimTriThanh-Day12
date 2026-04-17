@@ -75,7 +75,8 @@ Client → Nginx (:80) → Agent (:8000) → Redis (:6379)
 
 ### Exercise 3.1: Railway deployment
 
-- **URL:** _(Chưa deploy — cần `railway login` và kết nối GitHub repo trước)_
+- **URL:** `https://agent-api-production-dae1.up.railway.app`
+- **Deployed status:** ✅ Running (health + ready + ask tested successfully)
 - **Steps thực hiện:**
   1. `npm i -g @railway/cli` — cài CLI
   2. `railway login` — xác thực
