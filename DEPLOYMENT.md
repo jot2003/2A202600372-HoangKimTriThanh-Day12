@@ -1,5 +1,10 @@
 # Deployment Information
 
+## Student Information
+
+- Name: Hoàng Kim Trí Thành
+- Student ID: 2A202600372
+
 ## Public URL
 
 https://vinagent-web-production.up.railway.app
@@ -37,7 +42,7 @@ curl -X POST https://vinagent-web-production.up.railway.app/api/chat \
 ### API test (with key -> 200)
 ```bash
 curl -X POST https://vinagent-web-production.up.railway.app/api/chat \
-  -H "X-API-Key: vinagent-lab12-key" \
+  -H "X-API-Key: YOUR_API_KEY" \
   -H "X-User-Id: demo-user" \
   -H "Content-Type: application/json" \
   -d '{"message":"hello"}'
@@ -49,7 +54,7 @@ curl -X POST https://vinagent-web-production.up.railway.app/api/chat \
 for i in {1..15}; do
   curl -s -o /dev/null -w "%{http_code}\n" \
     -X POST https://vinagent-web-production.up.railway.app/api/chat \
-    -H "X-API-Key: vinagent-lab12-key" \
+    -H "X-API-Key: YOUR_API_KEY" \
     -H "X-User-Id: rate-user" \
     -H "Content-Type: application/json" \
     -d '{"message":"rate test"}'

@@ -1,7 +1,7 @@
 # Day 12 Lab - Mission Answers
 
-> **Student Name:** _________________________
-> **Student ID:** _________________________
+> **Student Name:** Hoàng Kim Trí Thành
+> **Student ID:** 2A202600372
 > **Date:** 17/04/2026
 
 ---
