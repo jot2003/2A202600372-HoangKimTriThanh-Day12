@@ -1,0 +1,16 @@
+version: "3.9"
+
+services:
+  vinagent:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - AGENT_API_KEY=dev-key-change-me
+      - RATE_LIMIT_PER_MINUTE=10
+      - MONTHLY_BUDGET_USD=10
+      - GOOGLE_API_KEY=
+      - OPENAI_API_KEY=
+    restart: unless-stopped

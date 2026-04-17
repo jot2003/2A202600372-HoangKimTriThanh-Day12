@@ -2,127 +2,81 @@
 
 ## Public URL
 
-https://agent-api-production-dae1.up.railway.app
+https://vinagent-web-production.up.railway.app
 
 ## Platform
 
 Railway
 
-## How to Deploy
+## Project Path
 
-### Option A: Railway (< 5 phút)
-
-```bash
-# 1. Cài Railway CLI
-npm i -g @railway/cli
-
-# 2. Login
-railway login
-
-# 3. Init project (chạy trong thư mục 06-lab-complete/)
-cd 06-lab-complete
-railway init
-
-# 4. Thêm Redis add-on trên Railway Dashboard
-#    → Project → Add Service → Redis
-
-# 5. Set environment variables
-railway variables set AGENT_API_KEY=<your-secret-key>
-railway variables set ENVIRONMENT=production
-railway variables set JWT_SECRET=<your-jwt-secret>
-railway variables set RATE_LIMIT_PER_MINUTE=10
-railway variables set MONTHLY_BUDGET_USD=10.0
-# REDIS_URL sẽ tự inject từ Redis add-on
-
-# 6. Deploy
-railway up
-
-# 7. Lấy domain
-railway domain
-```
-
-### Option B: Render
-
-1. Push code lên GitHub
-2. Vào [render.com](https://render.com) → Sign up
-3. New → Blueprint → Connect GitHub repo
-4. Render tự đọc `render.yaml`
-5. Set `AGENT_API_KEY` và `JWT_SECRET` trong Dashboard > Environment
-6. Deploy!
-
----
+`06/vinagent`
 
 ## Test Commands
 
 ### Health Check
 ```bash
-curl https://agent-api-production-dae1.up.railway.app/health
-# Actual: 200 {"status":"ok","version":"1.0.0","environment":"production",...}
+curl https://vinagent-web-production.up.railway.app/api/health
+# Actual: 200 {"status":"ok","service":"vinagent-web",...}
 ```
 
 ### Readiness Check
 ```bash
-curl https://agent-api-production-dae1.up.railway.app/ready
-# Actual: 200 {"ready":true,"redis":"ok"}
+curl https://vinagent-web-production.up.railway.app/api/ready
+# Actual: 200 {"ready":true,...}
 ```
 
-### API Test (with authentication)
+### Auth test (no key -> 401)
 ```bash
-curl -X POST https://agent-api-production-dae1.up.railway.app/ask \
-  -H "X-API-Key: lab-day12-key-2026" \
+curl -X POST https://vinagent-web-production.up.railway.app/api/chat \
   -H "Content-Type: application/json" \
-  -d '{"user_id": "test", "question": "Hello, what is Docker?"}'
-# Actual: 200 with JSON answer payload
+  -d '{"message":"hello"}'
+# Actual: 401
 ```
 
-### Auth test (no key → 401)
+### API test (with key -> 200)
 ```bash
-curl -X POST https://agent-api-production-dae1.up.railway.app/ask \
+curl -X POST https://vinagent-web-production.up.railway.app/api/chat \
+  -H "X-API-Key: vinagent-lab12-key" \
+  -H "X-User-Id: demo-user" \
   -H "Content-Type: application/json" \
-  -d '{"user_id": "test", "question": "Hello"}'
-# Actual: 401 Unauthorized
+  -d '{"message":"hello"}'
+# Actual: 200
 ```
 
 ### Rate limit test
 ```bash
 for i in {1..15}; do
   curl -s -o /dev/null -w "%{http_code}\n" \
-    -X POST https://agent-api-production-dae1.up.railway.app/ask \
-    -H "X-API-Key: lab-day12-key-2026" \
+    -X POST https://vinagent-web-production.up.railway.app/api/chat \
+    -H "X-API-Key: vinagent-lab12-key" \
+    -H "X-User-Id: rate-user" \
     -H "Content-Type: application/json" \
-    -d '{"user_id":"test","question":"test"}'
+    -d '{"message":"rate test"}'
 done
-# Actual: first 10 -> 200, request 11 -> 429
+# Actual: request 11 -> 429
 ```
 
 ## Environment Variables Set
 
-| Variable | Description |
-|----------|-------------|
-| `PORT` | `8000` |
-| `REDIS_URL` | `${{Redis.REDIS_URL}}` (service reference) |
-| `AGENT_API_KEY` | Set in Railway Variables (secret) |
-| `JWT_SECRET` | Set in Railway Variables (secret) |
-| `ENVIRONMENT` | `production` |
+| Variable | Value |
+|----------|-------|
+| `NODE_ENV` | `production` |
+| `AGENT_API_KEY` | set in Railway |
 | `RATE_LIMIT_PER_MINUTE` | `10` |
-| `MONTHLY_BUDGET_USD` | `10.0` |
+| `MONTHLY_BUDGET_USD` | `10` |
+| `HOSTNAME` | `0.0.0.0` |
 
 ## Screenshots
 
-- [Deployment dashboard](screenshots/dashboard.png)
-- [Service running](screenshots/running.png)
-- [Test results](screenshots/test.png)
+- [Deployment dashboard](screenshots/dashboard_vinagent.png)
+- [Service running](screenshots/running_vinagent.png)
+- [Test results](screenshots/test_vinagent.png)
 
 ## Local Development
 
 ```bash
-cd 06-lab-complete
+cd 06/vinagent
 cp .env.example .env.local
-# Edit .env.local with your values
-docker compose up
-# Test: curl http://localhost:8000/health
+docker compose up --build
 ```
-
----
-
-_Đã cập nhật bằng kết quả deploy thực tế trên Railway._
