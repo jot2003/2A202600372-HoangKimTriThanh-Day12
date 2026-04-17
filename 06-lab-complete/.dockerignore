@@ -1,11 +1,15 @@
 __pycache__/
 *.pyc
+*.pyo
 .env
 .env.*
 !.env.example
+.env.local
 venv/
 .venv/
 .git/
 *.md
 tests/
 .DS_Store
+.mypy_cache/
+.pytest_cache/
